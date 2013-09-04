@@ -1,0 +1,49 @@
+<html>
+<head></head>
+<body>
+    <script type="text/javascript">
+        var sock = null;
+        var wsuri = "ws://127.0.0.1:8001";
+
+        window.onload = function() {
+
+            writeToScreen("onload");
+
+            sock = new WebSocket(wsuri);
+
+            sock.onopen = function() {
+                writeToScreen("connected to " + wsuri);
+            }
+
+            sock.onclose = function(e) {
+                writeToScreen("connection closed (" + e.code + ")");
+            }
+
+            sock.onmessage = function(e) {
+                writeToScreen("message received: " + e.data);
+            }
+        };
+
+        function send() {
+            var msg = document.getElementById('message').value;
+            sock.send(msg);
+        };
+    function writeToScreen(message)
+    {
+        var pre = document.createElement("p");
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        output.appendChild(pre);
+    }
+    </script>
+    <h1>WebSocket Echo Test</h1>
+    <form>
+        <p>
+            Message: <input id="message" type="text" value="Hello, world!">
+        </p>
+    </form>
+    <button onclick="send();">Send Message</button>
+</body>
+  <div id="output"></div>
+
+</html>
